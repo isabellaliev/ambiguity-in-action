@@ -11,3 +11,5 @@ Folder Structure
 - `/scripts`: Python notebooks (text cleaning, extraction, counting)
 - `/outputs`: Visuals, counts, modality maps
 - `README.md`: You are here :)
+
+This repository supports my graduate research goals in computational linguistics, bridging my humanities foundation with applied data methodologies.
