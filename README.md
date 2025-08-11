@@ -12,4 +12,4 @@ Folder Structure
 - `/outputs`: Visuals, counts, modality maps
 - `README.md`: You are here :)
 
-This repository supports my graduate research goals in computational linguistics, bridging my humanities foundation with applied data methodologies.
+This repository supports my graduate research goals in computational linguistics and reflects my ongoing transition from humanities-based inquiry to applied data analysis.
