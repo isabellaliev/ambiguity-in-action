@@ -6,8 +6,8 @@ This repo investigates the **silent work of verbs**, the **vagueness of legal re
 
 Folder Structure
 
-- `/data`: Raw corpus files (scraped or manually collected)
 - `/cleaned`: Preprocessed texts, standardized for analysis
+- `/data`: Raw corpus files (scraped or manually collected)
 - `/scripts`: Python notebooks (text cleaning, extraction, counting)
 - `/outputs`: Visuals, counts, modality maps
 - `README.md`: You are here :)
