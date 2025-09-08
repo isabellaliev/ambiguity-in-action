@@ -1,0 +1,23 @@
+ambiguity-in-action/
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   ├── annotations/
+│   └── external/  # Comparison corpora
+├── src/
+│   ├── preprocessing/
+│   ├── feature_extraction/
+│   ├── models/
+│   ├── visualization/
+│   └── evaluation/
+├── notebooks/
+│   ├── 01_eda.ipynb
+│   ├── 02_modality_analysis.ipynb
+│   └── 03_ambiguity_patterns.ipynb
+├── results/
+│   ├── figures/
+│   └── tables/
+├── docs/
+│   ├── annotation_guidelines.md
+│   └── theoretical_framework.md
+└── tests/
