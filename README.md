@@ -15,7 +15,8 @@ This repository supports my graduate research goals in computational linguistics
 - Statistical analysis of ambiguity patterns across decree types
 
 **Current Status:**
-Phase 1: Pilot analysis with 3 Colombian decrees to develop and validate annotation methodology before scaling to larger corpus.
+
+**Phase 1:** Pilot analysis with 3 Colombian decrees to develop and validate annotation methodology before scaling to larger corpus.
 
 **Preliminary Findings:**
 
