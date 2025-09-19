@@ -1,13 +1,13 @@
-#dataloader to process Colombian decrees
+# dataloader to process Colombian decrees
 
 import os
-import logging #keeping record
-from pathlib import Path #easier way to work with paths
-import re      #regex
-from typing import Dict, List, Tuple #says what type of function to expect
-import pandas as pd #library to work with data tables
+import logging  # keeping record
+from pathlib import Path  # easier way to work with paths
+import re  # regex
+from typing import Dict, List, Tuple  # says what type of function to expect
+import pandas as pd  # library to work with data tables
 
-#set up logging to track preprocessing steps
+# set up logging to track preprocessing steps
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -18,203 +18,205 @@ class DecreeDataLoader:
     Handles loading, cleaning, and basic preprocessing of legal documents.
     """
 
-#setting up workspace to start project
-def _init_(self, raw_data_path: str = "data/raw", processed_data_path: str = "data/processed"):
-    self.raw_path = Path(raw_data_path)
-    self.processed_path = Path(processed_data_path)
-    self.processed_path.makedir(exist_ok=True)
+    # setting up workspace to start project
+    def __init__(self, raw_data_path: str = "data/raw", processed_data_path: str = "data/processed"):
+        self.raw_path = Path(raw_data_path)
+        self.processed_path = Path(processed_data_path)
+        self.processed_path.mkdir(exist_ok=True)
 
-    #creating a directory backup for raw texts
-    self.backup_path = Path("data/backup")
-    self.backup_path.makedir(exist_ok=True)
+        # creating a directory backup for raw texts
+        self.backup_path = Path("data/backup")
+        self.backup_path.mkdir(exist_ok=True)
 
-#loading individual files
-def load_decree_text(self, filename:str) -> str:
-    """
-    Load a single decree text file.
+    # loading individual files
+    def load_decree_text(self, filename: str) -> str:
+        """
+        Load a single decree text file.
 
-    Args:
-        filename: Name of the text file
+        Args:
+            filename: Name of the text file
 
-    Returns:
-        Raw text content of the decree
-    """
-    file_path = self.raw_path / filename
+        Returns:
+            Raw text content of the decree
+        """
+        file_path = self.raw_path / filename
 
-    try: 
-        with open(file_path, 'r', encoding='utf-8') as file:
-            text = file.read()
-            logger.info(f"Successfully loaded{filename}")
-            return text
-    except FileNotFoundError:
-        logger.error(f"File not found: {filename}")
-        raise
-    except UnicodeDecodeError: #trying different encodings in case UTF-8 fails
-        try:
-            with open (file_path, 'r', encoding='latin-1') as file:
+        try: 
+            with open(file_path, 'r', encoding='utf-8') as file:
                 text = file.read()
-                logger.warning(f"Loaded {filename} with latin-1 encoding")
+                logger.info(f"Successfully loaded {filename}")
                 return text
-        except:
-            logger.error(f"Could not decode {filename}")
+        except FileNotFoundError:
+            logger.error(f"File not found: {filename}")
             raise
+        except UnicodeDecodeError:  # trying different encodings in case UTF-8 fails
+            try:
+                with open(file_path, 'r', encoding='latin-1') as file:
+                    text = file.read()
+                    logger.warning(f"Loaded {filename} with latin-1 encoding")
+                    return text
+            except:
+                logger.error(f"Could not decode {filename}")
+                raise
 
-#cleaning the text
-def clean_text(self, text: str) -> str:
-    """
-    Clean text by removing special characters and normalizing whitespace.
-    Preserves Spanish accents and legal formatting.
+    # cleaning the text
+    def clean_text(self, text: str) -> str:
+        """
+        Clean text by removing special characters and normalizing whitespace.
+        Preserves Spanish accents and legal formatting.
 
-    Args:
-        text: Raw decree text
+        Args:
+            text: Raw decree text
 
-    Returns: Cleaned text
-    """
-#Removing additional whitespace preserving paragraph structure
-    text = re.sub(r'\n{3,}', '\n\n', text) #max 2 newlines 
-    text = re.sub(r'[\t]+', ' ', text)     #normalize spaces/tabs
+        Returns: 
+            Cleaned text
+        """
+        # Removing additional whitespace preserving paragraph structure
+        text = re.sub(r'\n{3,}', '\n\n', text)  # max 2 newlines 
+        text = re.sub(r'[ \t]+', ' ', text)     # normalize spaces/tabs
 
-#removing special characters but keeping legal punctuation
-#keeping: letters, numbers, accents, basic puntuation, spanish characters
-    text = re.sub(r'[^\w\s\.\,\;\:\!\?\(\)\-\"\'\ñÑáéíóúÁÉÍÓÚüÜ]', ' ', text)
+        # removing special characters but keeping legal punctuation
+        # keeping: letters, numbers, accents, basic punctuation, spanish characters
+        text = re.sub(r'[^\w\s\.\,\;\:\!\?\(\)\-\"\'\ñÑáéíóúÁÉÍÓÚüÜ]', ' ', text)
 
-#clean up multiple spaces created by character removal
-    text = text.strip(r'\s+', ' ', text)
+        # clean up multiple spaces created by character removal
+        text = re.sub(r'\s+', ' ', text)
 
-#strip leading whitespace
-    text = text.strip()
+        # strip leading/trailing whitespace
+        text = text.strip()
 
-    logger.info("Text cleaning completed")
-    return text
+        logger.info("Text cleaning completed")
+        return text
 
-#extracting metadata
-def extract_metadata(self, text: str, filename: str) -> Dict:
-    """
-    Extract basic metadata from decree text.
-    
-    Args:
-        text: Decree text content
-        filename: Original filename
-    
-    Returns:   
-        Dictionary with metadata
-    """
-    metadata = {
-        'filename': filename,
-        'wordcount': len(text.split()),
-        'char_count': len(text),
-        'paragraph_count': len(text.split('\n\n'))
-    }
+    # extracting metadata
+    def extract_metadata(self, text: str, filename: str) -> Dict:
+        """
+        Extract basic metadata from decree text.
+        
+        Args:
+            text: Decree text content
+            filename: Original filename
+        
+        Returns:   
+            Dictionary with metadata
+        """
+        metadata = {
+            'filename': filename,
+            'word_count': len(text.split()),
+            'char_count': len(text),
+            'paragraph_count': len(text.split('\n\n'))
+        }
 
-#trying to extract decree number and date from text
-    decreto_pattern = r'DECRETO\s+(?:NÚMERO\s+)?(\d+)\s+DE\s+(\d{4})'
-    ley_pattern = r'LEY\s+(\d+)\s+DE\s(\d{4})'
+        # trying to extract decree number and date from text
+        decreto_pattern = r'DECRETO\s+(?:NÚMERO\s+)?(\d+)\s+DE\s+(\d{4})'
+        ley_pattern = r'LEY\s+(\d+)\s+DE\s+(\d{4})'
 
-    decreto_match = re.search(decreto_pattern, text, re.IGNORECASE)
-    ley_match = re.search(ley_pattern, text, re.IGNORECASE)
+        decreto_match = re.search(decreto_pattern, text, re.IGNORECASE)
+        ley_match = re.search(ley_pattern, text, re.IGNORECASE)
 
-    if decreto_match:
-        metadata['document_type'] = 'DECRETO'
-        metadata['number'] = decreto_match.group(1)
-        metadata['number'] = decreto_match.group(2)
-    elif ley_match:
-        metadata['document_type'] = 'LEY'
-        metadata['number'] = ley_match.group(1)
-        metadata['number'] = ley_match.group(2)
-    else:
-        metadata['document_type'] = 'UNKNOWN'
-        metadata['number'] = None
-        metadata['number'] = None
+        if decreto_match:
+            metadata['document_type'] = 'DECRETO'
+            metadata['number'] = decreto_match.group(1)
+            metadata['year'] = decreto_match.group(2)
+        elif ley_match:
+            metadata['document_type'] = 'LEY'
+            metadata['number'] = ley_match.group(1)
+            metadata['year'] = ley_match.group(2)
+        else:
+            metadata['document_type'] = 'UNKNOWN'
+            metadata['number'] = None
+            metadata['year'] = None
 
-    return metadata
+        return metadata
 
-#saving processed text
-def save_processed_text(self, text: str, metadata: Dict, output_filename: str = None):
-    """
-    Save processed text and create backup of original.
+    # saving processed text
+    def save_processed_text(self, text: str, metadata: Dict, output_filename: str = None):
+        """
+        Save processed text and create backup of original.
 
-    Arg:
-    Text: Processed text
-    metadata: Document metadata
-    output_filename: Optional custom output filename
-    """
+        Args:
+            text: Processed text
+            metadata: Document metadata
+            output_filename: Optional custom output filename
+        """
 
-    if not output_filename:
-       base_name = metadata['filename'].replace('.txt', '')
-       output_filename = f"{base_name}_processed.txt"
+        if not output_filename:
+           base_name = metadata['filename'].replace('.txt', '')
+           output_filename = f"{base_name}_processed.txt"
 
-#save processed text
-    processed_file = self.processed_path / output_filename
-    with open(processed_file, 'w', encoding='utf-8') as f:
-       f.write(text)
+        # save processed text
+        processed_file = self.processed_path / output_filename
+        with open(processed_file, 'w', encoding='utf-8') as f:
+           f.write(text)
 
-#save metadata
-    metadata_file = self.processed_path / f"{output_filename.replace('.txt', '_metadata.txt')}"
-    with open(metadata_file, 'w', encoding='uft-8') as f:
-       for key, value in metadata.items():
-           f.write(f"{key}: {value}\n")
-    
-    logger.info(f"Processed text saved as {output_filename}")
-    logger.info(f"Metadata saved for {output_filename}")
+        # save metadata
+        metadata_file = self.processed_path / f"{output_filename.replace('.txt', '_metadata.txt')}"
+        with open(metadata_file, 'w', encoding='utf-8') as f:
+           for key, value in metadata.items():
+               f.write(f"{key}: {value}\n")
+        
+        logger.info(f"Processed text saved as {output_filename}")
+        logger.info(f"Metadata saved for {output_filename}")
 
-#processing all decrees at once (praying anxiously)
-def process_all_decrees(self) -> List[Dict]:
-    """
-    Process all decree files in the raw data directory.
+    # processing all decrees at once
+    def process_all_decrees(self) -> List[Dict]:
+        """
+        Process all decree files in the raw data directory.
 
-    Returns:
-        List of metadata dictionaries for all processed files
-    """
-    all_metadata = []
-    txt_files = list(self.raw_path.glob("*.txt"))
+        Returns:
+            List of metadata dictionaries for all processed files
+        """
+        all_metadata = []
+        txt_files = list(self.raw_path.glob("*.txt"))
 
-    if not txt_files:
-        logger.warning("No .txt files found in raw data directory")
+        if not txt_files:
+            logger.warning("No .txt files found in raw data directory")
+            return all_metadata
+            
+        for txt_file in txt_files:
+            try:
+                # load original text
+                original_text = self.load_decree_text(txt_file.name)
+
+                # create backup
+                backup_file = self.backup_path / txt_file.name
+                with open(backup_file, 'w', encoding='utf-8') as f:
+                    f.write(original_text)
+
+                # clean text
+                cleaned_text = self.clean_text(original_text)
+
+                # extract metadata
+                metadata = self.extract_metadata(cleaned_text, txt_file.name)
+
+                # save processed version
+                self.save_processed_text(cleaned_text, metadata)
+
+                all_metadata.append(metadata)
+
+            except Exception as e:
+                logger.error(f"Error processing {txt_file.name}: {str(e)}")
+                continue
+
+        # save summary metadata
+        self.save_processing_summary(all_metadata)
+
         return all_metadata
-    for txt_file in txt_files:
-        try:
-            #load original text
-            original_text = self.load_decree_text(txt_file.name)
 
-            #create backup
-            backup_file = self.backup_path / txt_file.name
-            with open(backup_file, 'w', encoding='utf-8') as f:
-                f.write(original_text)
+    # saving processing summary
+    def save_processing_summary(self, all_metadata: List[Dict]):
+        """ Save a summary of all processed files."""
+        df = pd.DataFrame(all_metadata)
+        summary_file = self.processed_path / "processing_summary.csv"
+        df.to_csv(summary_file, index=False)
+        logger.info(f"Processing summary saved to {summary_file}")
 
-            #clean text
-            cleaned_text = self.clean_text(original_text)
-
-            #extract metadata
-            metadata = self.extract_metadata(cleaned_text, txt_file.name)
-
-            #save processed version
-            self.save_processed_text(cleaned_text, metadata)
-
-            all_metadata.append(metadata)
-
-        except Exception as e:
-            logger.error(f"Error processing {txt_file.name}: {str(e)}")
-            continue
-
-    #save summary metadata
-    self.save_processing_summary(all_metadata)
-
-    return all_metadata
-
-#saving processing summary
-def save_processing_summary(self, all_metadata: List[Dict]):
-    """ Save a summary of all processed files."""
-    df = pd.DataFrame(all_metadata)
-    summary_file = self.processed_path / "processing_summary.cvs"
-    df.to_cvs(summary_file, index=False)
-    logger.info(f"Processing summary saved to {summary_file}")
-
-#example usage and testing
-if __name__ = "_main_":
-    #initialize the data loader
+# example usage and testing
+if __name__ == "__main__":
+    # initialize the data loader
     loader = DecreeDataLoader()
 
-    #processed all decree files
+    # process all decree files
     print("Starting decree processing...")
     metadata = loader.process_all_decrees()
 

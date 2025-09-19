@@ -1,0 +1,7 @@
+filename: Decreto_1194_1989.txt
+word_count: 0
+char_count: 0
+paragraph_count: 1
+document_type: UNKNOWN
+number: None
+year: None

@@ -1,0 +1,7 @@
+filename: Decreto 1194 - 1989_ocr.txt
+word_count: 455
+char_count: 18152
+paragraph_count: 1
+document_type: UNKNOWN
+number: None
+year: None

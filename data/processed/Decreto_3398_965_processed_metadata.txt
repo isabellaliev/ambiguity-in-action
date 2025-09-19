@@ -1,0 +1,7 @@
+filename: Decreto_3398_965.txt
+word_count: 2547
+char_count: 16377
+paragraph_count: 1
+document_type: DECRETO
+number: 3398
+year: 1965
