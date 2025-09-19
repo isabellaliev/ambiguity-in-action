@@ -81,12 +81,12 @@ class OCRExtractor:
                     if page_text.strip():
                         full_text += page_text + "\n\n"
                         word_count = len(page_text.split())
-                        logger.info(f"  ✅ Page {page_num}: {word_count} words extracted")
+                        logger.info(f"  Page {page_num}: {word_count} words extracted")
                     else:
-                        logger.warning(f"  ⚠️  Page {page_num}: no text found")
+                        logger.warning(f" Page {page_num}: no text found")
                     
                 except Exception as e:
-                    logger.warning(f"  ❌ Error on page {page_num}: {str(e)}")
+                    logger.warning(f" Error on page {page_num}: {str(e)}")
                     continue
             
             # Clean the extracted text
@@ -101,12 +101,12 @@ class OCRExtractor:
                 txt_file.write(cleaned_text)
             
             word_count = len(cleaned_text.split())
-            logger.info(f"✅ OCR completed! {word_count} words saved to {output_path}")
+            logger.info(f" OCR completed! {word_count} words saved to {output_path}")
             
             return cleaned_text
             
         except Exception as e:
-            logger.error(f"❌ OCR failed for {pdf_filename}: {str(e)}")
+            logger.error(f"OCR failed for {pdf_filename}: {str(e)}")
             raise
     
     def _clean_ocr_text(self, text: str) -> str:
@@ -156,18 +156,18 @@ class OCRExtractor:
         
         for filename in filenames:
             try:
-                print(f"\n🔍 Starting OCR for: {filename}")
+                print(f"\n Starting OCR for: {filename}")
                 text = self.ocr_pdf(filename)
                 results[filename] = {'status': 'success', 'words': len(text.split())}
-                print(f"✅ Success: {results[filename]['words']} words extracted")
+                print(f" Success: {results[filename]['words']} words extracted")
                 
                 # Show preview
                 preview = text[:200].replace('\n\n', ' | ').replace('\n', ' ')
-                print(f"📝 Preview: {preview}...")
+                print(f" Preview: {preview}...")
                 
             except Exception as e:
                 results[filename] = {'status': 'failed', 'error': str(e)}
-                print(f"❌ Failed: {str(e)}")
+                print(f" Failed: {str(e)}")
         
         return results
 
@@ -177,22 +177,22 @@ def ocr_failed_pdfs():
     """
     ocr = OCRExtractor()
     
-    print("🔍 OCR Extractor for Image-based PDFs")
+    print(" OCR Extractor for Image-based PDFs")
     print("=" * 45)
     
     # List all PDFs
     pdf_files = list(Path("data/raw").glob("*.pdf"))
     
     if not pdf_files:
-        print("❌ No PDF files found in data/raw/")
+        print(" No PDF files found in data/raw/")
         return
     
-    print(f"📁 Available PDF files:")
+    print(f" Available PDF files:")
     for i, pdf in enumerate(pdf_files, 1):
         print(f"  {i}. {pdf.name}")
     
     # Let user choose which ones need OCR
-    print(f"\n💡 Which PDFs need OCR? (Enter numbers separated by commas, or 'all')")
+    print(f"\n Which PDFs need OCR? (Enter numbers separated by commas, or 'all')")
     choice = input("Your choice: ").strip()
     
     if choice.lower() == 'all':
@@ -202,14 +202,14 @@ def ocr_failed_pdfs():
             indices = [int(x.strip()) - 1 for x in choice.split(',')]
             selected_files = [pdf_files[i].name for i in indices if 0 <= i < len(pdf_files)]
         except:
-            print("❌ Invalid input. Please try again.")
+            print(" Invalid input. Please try again.")
             return
     
     if not selected_files:
-        print("❌ No files selected.")
+        print(" No files selected.")
         return
     
-    print(f"\n🔍 Will OCR {len(selected_files)} files:")
+    print(f"\n Will OCR {len(selected_files)} files:")
     for filename in selected_files:
         print(f"  - {filename}")
     
@@ -220,9 +220,9 @@ def ocr_failed_pdfs():
     successful = [f for f, r in results.items() if r['status'] == 'success']
     failed = [f for f, r in results.items() if r['status'] == 'failed']
     
-    print(f"\n📊 OCR Results:")
-    print(f"✅ Successful: {len(successful)}")
-    print(f"❌ Failed: {len(failed)}")
+    print(f"\n OCR Results:")
+    print(f" Successful: {len(successful)}")
+    print(f" Failed: {len(failed)}")
 
 if __name__ == "__main__":
     ocr_failed_pdfs()

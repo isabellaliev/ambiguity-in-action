@@ -17,18 +17,18 @@ def test_poppler_paths():
     print("🔍 Testing poppler paths...")
     
     for path in possible_paths:
-        print(f"\n📁 Testing: {path}")
+        print(f"\n Testing: {path}")
         
         if not Path(path).exists():
-            print("❌ Path doesn't exist")
+            print(" Path doesn't exist")
             continue
             
-        print("✅ Path exists!")
+        print(" Path exists!")
         
         # List files in the directory
         try:
             files = list(Path(path).glob("*.exe"))
-            print(f"📄 Found {len(files)} .exe files:")
+            print(f" Found {len(files)} .exe files:")
             for file in files[:5]:  # Show first 5
                 print(f"   - {file.name}")
             
@@ -37,25 +37,25 @@ def test_poppler_paths():
             found_files = [f for f in key_files if (Path(path) / f).exists()]
             
             if found_files:
-                print(f"🎯 Found key poppler files: {found_files}")
+                print(f" Found key poppler files: {found_files}")
                 return path  # This looks like the right path
             else:
-                print("⚠️  No key poppler files found here")
+                print("  No key poppler files found here")
                 
         except Exception as e:
-            print(f"❌ Error reading directory: {e}")
+            print(f" Error reading directory: {e}")
     
     return None
 
 def test_pdf_conversion(poppler_path=None):
     """Test actual PDF conversion"""
     
-    print(f"\n🧪 Testing PDF conversion...")
+    print(f"\n Testing PDF conversion...")
     
     pdf_path = Path("data/raw/Decreto 1194 - 1989.pdf")
     
     if not pdf_path.exists():
-        print(f"❌ Test PDF not found: {pdf_path}")
+        print(f" Test PDF not found: {pdf_path}")
         return
     
     try:
@@ -66,30 +66,30 @@ def test_pdf_conversion(poppler_path=None):
             print("Trying without poppler_path (using PATH)")
             images = convert_from_path(pdf_path, dpi=150, first_page=1, last_page=1)
             
-        print(f"✅ SUCCESS! Converted 1 page. Image size: {images[0].size}")
+        print(f" SUCCESS! Converted 1 page. Image size: {images[0].size}")
         return True
         
     except Exception as e:
-        print(f"❌ FAILED: {e}")
+        print(f" FAILED: {e}")
         return False
 
 def check_path_environment():
     """Check if poppler is in PATH"""
-    print("\n🌍 Checking PATH environment...")
+    print("\n Checking PATH environment...")
     
     path_env = os.environ.get('PATH', '')
     poppler_in_path = any('poppler' in p.lower() for p in path_env.split(';'))
     
     if poppler_in_path:
-        print("✅ Found 'poppler' in PATH")
+        print(" Found 'poppler' in PATH")
         poppler_paths = [p for p in path_env.split(';') if 'poppler' in p.lower()]
         for p in poppler_paths:
             print(f"   - {p}")
     else:
-        print("❌ No 'poppler' found in PATH")
+        print(" No 'poppler' found in PATH")
 
 if __name__ == "__main__":
-    print("🔧 Poppler Diagnostic Tool")
+    print(" Poppler Diagnostic Tool")
     print("=" * 40)
     
     # Test 1: Check PATH
@@ -100,20 +100,16 @@ if __name__ == "__main__":
     
     # Test 3: Try PDF conversion
     if correct_path:
-        print(f"\n🎯 Using discovered path: {correct_path}")
+        print(f"\n Using discovered path: {correct_path}")
         success = test_pdf_conversion(correct_path)
     else:
-        print(f"\n🤷 No poppler path found, trying without path...")
+        print(f"\n No poppler path found, trying without path...")
         success = test_pdf_conversion()
     
     if success:
-        print(f"\n🎉 POPPLER IS WORKING!")
+        print(f"\n POPPLER IS WORKING!")
         if correct_path:
-            print(f"💡 Use this path in your OCR script:")
+            print(f" Use this path in your OCR script:")
             print(f"POPPLER_PATH = r'{correct_path}'")
     else:
-        print(f"\n💔 Still having issues...")
-        print(f"💡 Try these solutions:")
-        print(f"   1. Reinstall poppler with conda: conda install -c conda-forge poppler")
-        print(f"   2. Download poppler from: https://github.com/oschwartz10612/poppler-windows/releases/")
-        print(f"   3. Add poppler bin folder to Windows PATH")
+        print(f"\n Still having issues...")
