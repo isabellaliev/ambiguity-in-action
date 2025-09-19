@@ -1,4 +1,4 @@
-# scripts/pdf_extractor.py
+# pdf extractor to txt
 import PyPDF2
 import logging
 from pathlib import Path
@@ -8,6 +8,7 @@ from typing import Optional
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# pdf extractor class setup
 class PDFExtractor:
     """
     Simple PDF text extractor for Colombian decree documents.
@@ -17,7 +18,8 @@ class PDFExtractor:
         self.pdf_folder = Path(pdf_folder)
         self.output_folder = Path(output_folder)
         self.output_folder.mkdir(exist_ok=True)
-    
+
+#main pdf extraction function    
     def extract_text_from_pdf(self, pdf_filename: str, output_filename: Optional[str] = None) -> str:
         """
         Extract text from a single PDF file.
@@ -74,6 +76,7 @@ class PDFExtractor:
             logger.error(f"Error processing PDF {pdf_filename}: {str(e)}")
             raise
     
+#text cleaning function
     def _clean_extracted_text(self, text: str) -> str:
         """
         Clean text extracted from PDF to improve readability.
@@ -108,6 +111,7 @@ class PDFExtractor:
         
         return text
     
+#extracting all pdfs at once
     def extract_all_pdfs(self):
         """
         Extract text from all PDF files in the pdf_folder.
@@ -149,15 +153,15 @@ def extract_decreto_1194():
     for filename in possible_names:
         try:
             text = extractor.extract_text_from_pdf(filename, "decreto_1194_1989.txt")
-            print(f"✅ Successfully extracted: {filename}")
-            print(f"📄 First 200 characters:")
+            print(f"Successfully extracted: {filename}")
+            print(f"First 200 characters:")
             print(text[:200] + "...")
             return text
         except FileNotFoundError:
             continue
     
-    print("❌ Could not find Decreto 1194 PDF file")
-    print("📁 Available PDF files:")
+    print("Could not find Decreto 1194 PDF file")
+    print("Available PDF files:")
     pdf_files = list(Path("data/raw").glob("*.pdf"))
     for pdf in pdf_files:
         print(f"   - {pdf.name}")
