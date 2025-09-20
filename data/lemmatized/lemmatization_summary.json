@@ -1,0 +1,20 @@
+{
+  "Decreto 1194 - 1989_ocr_processed.txt": {
+    "original_words": 451,
+    "unique_original": 438,
+    "unique_lemmatized": 437,
+    "reduction_percentage": 0.23
+  },
+  "Decreto_3398_965_processed.txt": {
+    "original_words": 2541,
+    "unique_original": 808,
+    "unique_lemmatized": 694,
+    "reduction_percentage": 14.11
+  },
+  "Ley_48_1968_processed.txt": {
+    "original_words": 2158,
+    "unique_original": 756,
+    "unique_lemmatized": 662,
+    "reduction_percentage": 12.43
+  }
+}
