@@ -14,7 +14,7 @@ def test_poppler_paths():
         # Add more if needed
     ]
     
-    print("🔍 Testing poppler paths...")
+    print(" Testing poppler paths...")
     
     for path in possible_paths:
         print(f"\n Testing: {path}")
