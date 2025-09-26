@@ -1,0 +1,1 @@
+*This directory contains notebooks exploring the application of mathematical models (graph theory, linear algebra, probability) to analyze structural patterns and relationships within the legal corpus*
