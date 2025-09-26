@@ -27,9 +27,11 @@ Initial analysis demonstrates feasibility of modal verb detection approach and r
 - `/data`: Raw and processed texts ready for parsing
 - `/docs`: Theoretical frameworks and annotation guidelines
 - `/notebooks`: Python notebooks 
+    - `/math_applications`: graph theory, probability and linear algebra
 - `/results`: Visuals, figures, tables
 - `/src`: Evaluation, feature extraction, models, preprocessing and visualization python scripts
 - `/tests`: Pending - for future reference
 - `README.md`: You are here :)
 - `requirements.txt`: Required libraries for reproduction
 
+This project incorporates mathematical modeling to deepen the analysis. The *notebooks/math_applications* folder contains explorations applying graph theory, probability, and linear algebra to model relationships and patterns within the legal corpus.
