@@ -16,7 +16,7 @@ This repository supports my graduate research goals in computational linguistics
 
 **Current Status:**
 
-**Phase 1:** Pilot analysis with 3 Colombian decrees to develop and validate annotation methodology before scaling to larger corpus.
+**Phase 2:** Core Analysis Development. Creation of a Modal Verb detection system and Subjunctive mood detector. 
 
 **Preliminary Findings:**
 
