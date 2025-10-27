@@ -1,7 +1,7 @@
 ### Computational Analysis of Semantic Framing in Colombian Political Discourse
 Constructing the 'Guerrillero'
 
-# ambiguity-in-action
+### ambiguity-in-action
 Under construction
 
 > **Note on Project Evolution**: This repository documents my learning journey in computational linguistics. The `z_archive/` folder contains my initial exploratory work (Phase 1: broad ambiguity analysis). Based on that learning, I refocused the project on a more specific, achievable research question about contested political terms. This evolution reflects genuine research practice—refining questions based on data constraints and conceptual clarity.
