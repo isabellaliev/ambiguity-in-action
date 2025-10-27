@@ -1,7 +1,0 @@
-filename: Ley_48_1968.txt
-word_count: 2178
-char_count: 12998
-paragraph_count: 1
-document_type: DECRETO
-number: 2351
-year: 1965
