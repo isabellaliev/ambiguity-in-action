@@ -1,36 +1,22 @@
+### Computational Analysis of Semantic Framing in Colombian Political Discourse
+Constructing the 'Guerrillero'
+
 # ambiguity-in-action
+Under construction
 
-This computational linguistics project analyzes how linguistic ambiguity in Colombian legal decrees creates interpretive spaces that create interpretive ambiguity. Using corpus analysis, speech act theory and CDA, I examine modal verbs, performative constructions, and rhetorical vagueness in governmental discourse focusing on post-1965 security legislation. 
+> **Note on Project Evolution**: This repository documents my learning journey in computational linguistics. The `z_archive/` folder contains my initial exploratory work (Phase 1: broad ambiguity analysis). Based on that learning, I refocused the project on a more specific, achievable research question about contested political terms. This evolution reflects genuine research practice—refining questions based on data constraints and conceptual clarity.
 
-This repository supports my graduate research goals in computational linguistics and reflects my ongoing transition from humanities-based inquiry to applied data analysis. This methodology could extend to legal discourse analysis in other Latin American contexts and contribute to computational approaches in legal studies.
+### Project Evolution
 
-**Methods:**
+### Phase 1: Exploratory Work (Archived)
+**Goal**: Broad ambiguity analysis across Colombian legal decrees  
+**What I learned**: 
+- Data collection challenges (PDF extraction, OCR)
+- spaCy basics for Spanish NLP
+- Scope needed refinement for pre-MA work
 
-- Iterative methodology development using pilot corpus of 3 decrees.
-- Focus on annotation consistency and pattern identification before corpus expansion
-- Manual validation of automated detection algorithms on small sample
-- Text preprocessing with spaCy Spanish language models
-- Modal verb detection using custom lexicons (deontic, epistemic, dynamic)
-- Dependency parsing for syntactic ambiguity identification
-- Statistical analysis of ambiguity patterns across decree types
+**Key takeaway**: Research questions must match available data and timeline.
 
-**Current Status:**
-
-**Phase 2:** Core Analysis Development. Creation of a Modal Verb detection system and Subjunctive mood detector. 
-
-**Preliminary Findings:**
-
-Initial analysis demonstrates feasibility of modal verb detection approach and reveals consistent patterns in authority delegation language.
-
-**Folder Structure**
-
-- `/data`: Raw and processed texts ready for parsing
-- `/docs`: Theoretical frameworks and annotation guidelines
-- `/notebooks`: Python notebooks 
-- `/results`: Visuals, figures, tables
-- `/src`: Evaluation, feature extraction, models, preprocessing and visualization python scripts
-- `/tests`: Pending - for future reference
-- `README.md`: You are here :)
-- `requirements.txt`: Required libraries for reproduction
-
-This project incorporates mathematical modeling to deepen the analysis. The *notebooks/math_applications* folder contains explorations applying graph theory, probability, and linear algebra to model relationships and patterns within the legal corpus.
+### Phase 2: Focused Analysis (Current)
+**Goal**: Semantic framing of contested terms in Colombian political discourse  
+Under construction
